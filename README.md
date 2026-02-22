@@ -1,6 +1,6 @@
 # ai-images
 
-A collection of Google Colab notebooks exploring AI image generation and computer vision, including text-to-image synthesis, VAE encode/decode, and image recognition.
+A collection of Google Colab notebooks exploring AI image generation and computer vision, including text-to-image synthesis (Stable Diffusion and Vertex AI Imagen), VAE encode/decode, and image recognition.
 
 ## Notebooks
 
@@ -9,6 +9,7 @@ A collection of Google Colab notebooks exploring AI image generation and compute
 | [`diffusers_generator.ipynb`](diffusers_generator.ipynb) | Text-to-image generation using [Stable Diffusion 3.5 Medium](https://huggingface.co/stabilityai/stable-diffusion-3.5-medium) |
 | [`decode_encode.ipynb`](decode_encode.ipynb) | VAE encode/decode demo — compress an image to latent space and reconstruct it |
 | [`image_recognition.ipynb`](image_recognition.ipynb) | Image classification using a pre-trained Vision Transformer (ViT) |
+| [`vertex-ai.ipynb`](vertex-ai.ipynb) | Text-to-image generation using [Imagen 4.0](https://cloud.google.com/vertex-ai/generative-ai/docs/image/overview) on Google Cloud Vertex AI |
 
 ---
 
@@ -198,6 +199,59 @@ Prediction index: 207
 | `torchvision` | Pre-trained ViT model and image transforms     |
 | `Pillow`      | Image loading                                  |
 | `requests`    | Downloading the sample image                   |
+
+---
+
+## 4. Vertex AI — Imagen 4.0 Image Generation (`vertex-ai.ipynb`)
+
+Generates images from text prompts using Google's [Imagen 4.0](https://cloud.google.com/vertex-ai/generative-ai/docs/image/overview) model via the [Vertex AI SDK](https://cloud.google.com/vertex-ai/docs/python-sdk/use-vertex-ai-python-sdk).
+
+### What it does
+
+1. Installs the `google-cloud-aiplatform` SDK and restarts the runtime.
+2. Sets up a helper function to display generated images inline.
+3. Initialises a Vertex AI session with your Google Cloud project and region.
+4. Calls `ImageGenerationModel` (`imagen-4.0-generate-001`) to generate images from a text prompt.
+5. Displays the first generated image.
+
+### Open in Colab
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/sujithkumarmp/ai-images/blob/main/vertex-ai.ipynb)
+
+### Prerequisites
+
+- A [Google Cloud](https://cloud.google.com/) project with the Vertex AI API enabled.
+- Appropriate IAM permissions to call the Imagen API.
+
+### Getting Started
+
+1. Open the notebook in Google Colab via the badge above.
+2. Run the first cell to install the Vertex AI SDK:
+   ```
+   pip install --upgrade --user google-cloud-aiplatform
+   ```
+3. Restart the runtime when prompted.
+4. Update the `project` and `location` parameters in `vertexai.init()` to match your Google Cloud project.
+5. Update the `prompt` string with your desired image description.
+6. Run the generation cell — the first generated image will be displayed inline.
+
+### Configuration
+
+| Parameter           | Default                          | Description                                      |
+|---------------------|----------------------------------|--------------------------------------------------|
+| `project`           | `"agent-to-agent-2012"`          | Your Google Cloud project ID                     |
+| `location`          | `"us-central1"`                  | Google Cloud region                              |
+| `prompt`            | `"Create a city realistic image in 2040"` | Text description of the image to generate |
+| `number_of_images`  | `4`                              | Number of images to generate per request         |
+| `aspect_ratio`      | `"1:1"`                          | Output image aspect ratio                        |
+| `add_watermark`     | `True`                           | Whether to add a SynthID watermark               |
+
+### Dependencies
+
+| Package                  | Purpose                                   |
+|--------------------------|-------------------------------------------|
+| `google-cloud-aiplatform`| Vertex AI SDK — model access & generation |
+| `Pillow`                 | Image display helper                      |
 
 ---
 
